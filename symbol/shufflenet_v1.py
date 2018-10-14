@@ -9,13 +9,6 @@ def combine(branch1, branch2, combine):
 
     return data
 
-def channel_shuffle(data, groups):
-    data = mx.sym.reshape(data, shape=(0, -4, groups, -1, -2))
-    data = mx.sym.swapaxes(data, 1, 2)
-    data = mx.sym.reshape(data, shape=(0, -3, -2))
-
-    return data
-
 def shuffleUnit(residual, in_channels, out_channels, combine_type, groups=3, grouped_conv=True):
 
     if combine_type == 'add':
