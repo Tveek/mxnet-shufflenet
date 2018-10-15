@@ -73,6 +73,9 @@ def get_symbol(num_classes=1000, **kwargs):
     data = mx.sym.var('data')
     data = mx.sym.Convolution(data=data, num_filter=24,
         	                  kernel=(3, 3), stride=(2, 2), pad=(1, 1))
+    data = mx.sym.BatchNorm(data=data)
+    data = mx.sym.Activation(data=data, act_type='relu')
+
     data = mx.sym.Pooling(data=data, kernel=(3, 3), pool_type='max',
     	                  stride=(2, 2), pad=(1, 1))
 
