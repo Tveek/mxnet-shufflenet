@@ -45,5 +45,6 @@ git clone https://github.com/Tveek/mxnet-shufflenet.git
 - The top-1/5 accuracy rates by using single random crop (crop size: 224x224, image size: 256xN)
 
 Network|Top-1|Top-5|model size
+:---:|:---:|:---:|---:|
 ShuffleNet_V1| 63.94| 85.27| 7.1MB |
 
