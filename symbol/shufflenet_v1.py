@@ -3,11 +3,18 @@ import mxnet as mx
 def combine(branch1, branch2, combine):
     if combine == 'add':
         data = branch1 + branch2
+        data = mx.sym.Activation(data=data, act_type='relu')
     elif combine == 'concat':
         data = mx.sym.concat(branch1, branch2, dim=1)
 	data = mx.sym.Activation(data=data, act_type='relu')
 
     return data
+
+def channel_shuffle(data, groups):
+	data = mx.sym.reshape(data, shape=(0, -4, groups, -1, -2))
+        data = mx.sym.swapaxes(data, 1, 2)
+	data = mx.sym.reshape(data, shape=(0, -3, -2))
+	return data
 
 def shuffleUnit(residual, in_channels, out_channels, combine_type, groups=3, grouped_conv=True):
 
@@ -26,7 +33,9 @@ def shuffleUnit(residual, in_channels, out_channels, combine_type, groups=3, gro
     data = mx.sym.BatchNorm(data=data)
     data = mx.sym.Activation(data=data, act_type='relu')
 
-    data = mx.contrib.sym.ShuffleChannel(data=data, group=groups)
+    if grouped_conv:
+    	# data = mx.contrib.sym.ShuffleChannel(data=data, group=groups)
+	data = channel_shuffle(data, groups)
 
     data = mx.sym.Convolution(data=data, num_filter=bottleneck_channels, kernel=(3, 3),
     	               pad=(1, 1), stride=(DWConv_stride, DWConv_stride), num_group=bottleneck_channels)
@@ -73,8 +82,6 @@ def get_symbol(num_classes=1000, **kwargs):
     data = mx.sym.var('data')
     data = mx.sym.Convolution(data=data, num_filter=24,
         	                  kernel=(3, 3), stride=(2, 2), pad=(1, 1))
-    data = mx.sym.BatchNorm(data=data)
-    data = mx.sym.Activation(data=data, act_type='relu')
 
     data = mx.sym.Pooling(data=data, kernel=(3, 3), pool_type='max',
     	                  stride=(2, 2), pad=(1, 1))
