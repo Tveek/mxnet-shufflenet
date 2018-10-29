@@ -6,15 +6,16 @@ def combine(branch1, branch2, combine):
         data = mx.sym.Activation(data=data, act_type='relu')
     elif combine == 'concat':
         data = mx.sym.concat(branch1, branch2, dim=1)
-	data = mx.sym.Activation(data=data, act_type='relu')
+        data = mx.sym.Activation(data=data, act_type='relu')
 
     return data
 
 def channel_shuffle(data, groups):
-	data = mx.sym.reshape(data, shape=(0, -4, groups, -1, -2))
-        data = mx.sym.swapaxes(data, 1, 2)
-	data = mx.sym.reshape(data, shape=(0, -3, -2))
-	return data
+    data = mx.sym.reshape(data, shape=(0, -4, groups, -1, -2))
+    data = mx.sym.swapaxes(data, 1, 2)
+    data = mx.sym.reshape(data, shape=(0, -3, -2))
+
+    return data
 
 def shuffleUnit(residual, in_channels, out_channels, combine_type, groups=3, grouped_conv=True):
 
@@ -34,8 +35,8 @@ def shuffleUnit(residual, in_channels, out_channels, combine_type, groups=3, gro
     data = mx.sym.Activation(data=data, act_type='relu')
 
     if grouped_conv:
-    	# data = mx.contrib.sym.ShuffleChannel(data=data, group=groups)
-	data = channel_shuffle(data, groups)
+        # data = mx.contrib.sym.ShuffleChannel(data=data, group=groups)
+        data = channel_shuffle(data, groups)
 
     data = mx.sym.Convolution(data=data, num_filter=bottleneck_channels, kernel=(3, 3),
     	               pad=(1, 1), stride=(DWConv_stride, DWConv_stride), num_group=bottleneck_channels)
