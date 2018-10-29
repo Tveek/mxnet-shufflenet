@@ -33,8 +33,17 @@ git clone https://github.com/Tveek/mxnet-shufflenet.git
 	2.4 Install the MXNet Python binding by
 	```
 	cd python
-	sudo python setup.py install
+	sudo python setup.py install 
 	```
-## Model
 
-shufflenet's model is in symbol folder 
+3. Python operator function are also in symbol file, so you can use it without above
+
+## Pretrained Models on ImageNet
+
+- RGB mean and std are used(rgb_mean=**[123.68,116.779,103.939]**, rgb_std=**[58.393,57.12,57.375]**)
+
+- The top-1/5 accuracy rates by using single random crop (crop size: 224x224, image size: 256xN)
+
+Network|Top-1|Top-5|model size
+ShuffleNet_V1| 63.94| 85.27| 7.1MB |
+
