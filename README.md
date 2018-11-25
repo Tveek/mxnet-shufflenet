@@ -47,4 +47,4 @@ git clone https://github.com/Tveek/mxnet-shufflenet.git
 Network|Top-1|Top-5|model size
 :---:|:---:|:---:|---:|
 ShuffleNet_V1_1x3| 63.94| 85.27| 7.1MB |
-
+ShuffleNet_V2_1| 65.43| 86.50| 8.7MB |
